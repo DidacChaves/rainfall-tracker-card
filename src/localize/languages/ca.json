@@ -1,0 +1,13 @@
+{
+  "COMMON": {
+    "VERSION": "Versió",
+    "ENTITY": "Entitat de pluja",
+    "RAINFALL_INTENSITY_ENTITY": "Entitat d'intensitat de pluja (opcional)",
+    "AREA": "Àrea a mostrar (Opcional)",
+    "NAME": "Nom (Opcional)"
+  },
+  "ERROR": {
+    "NO_ENTITY": "No s'ha definit cap entitat",
+    "INVALID_CONFIG": "La configuració no vàlida"
+  }
+}

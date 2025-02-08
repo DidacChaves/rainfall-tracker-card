@@ -1,0 +1,13 @@
+{
+  "COMMON": {
+    "VERSION": "Versión",
+    "ENTITY": "Entidad de lluvia",
+    "RAINFALL_INTENSITY_ENTITY": "Entidad de intensidad de lluvia (opcional)",
+    "AREA": "Área a mostrar (Opcional)",
+    "NAME": "Nombre (Opcional)"
+  },
+  "ERROR": {
+    "NO_ENTITY": "No se ha definido ninguna entidad",
+    "INVALID_CONFIG": "Configuración no válida"
+  }
+}

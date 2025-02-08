@@ -1,5 +1,5 @@
 {
-    "name": "Boilerplate Card",
+    "name": "Rainfall tracker card",
     "render_readme": true,
-    "filename": "boilerplate-card.js"
+    "filename": "rainfall-tracker-card.js"
 }

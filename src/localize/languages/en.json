@@ -1,8 +1,13 @@
 {
-  "common": {
-    "version": "Version",
-    "invalid_configuration": "Invalid configuration",
-    "show_warning": "Show Warning",
-    "show_error": "Show Error"
+  "COMMON": {
+    "VERSION": "Version",
+    "ENTITY": "Rainfall Entity",
+    "RAINFALL_INTENSITY_ENTITY": "Rainfall Intensity Entity (optional)",
+    "AREA": "Area to display (Optional)",
+    "NAME": "Name (Optional)"
+  },
+  "ERROR": {
+    "NO_ENTITY": "No Entity Defined",
+    "INVALID_CONFIG": "Invalid configuration"
   }
 }
