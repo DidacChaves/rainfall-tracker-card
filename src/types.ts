@@ -7,13 +7,9 @@ declare global {
   }
 }
 
-
-// TODO Add your configuration elements here for type-checking
 export interface RainfallTrackerCardConfig extends LovelaceCardConfig {
   type: string;
   name?: string;
-  show_warning?: boolean;
-  show_error?: boolean;
   test_gui?: boolean;
   entity?: string;
   rainfall_intensity_entity?: string;

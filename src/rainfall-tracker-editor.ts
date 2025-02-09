@@ -46,14 +46,6 @@ export class RainfallTrackerCardEditor extends LitElement implements LovelaceCar
     return this._config?.area || '';
   }
 
-  get _show_warning(): boolean {
-    return this._config?.show_warning || false;
-  }
-
-  get _show_error(): boolean {
-    return this._config?.show_error || false;
-  }
-
 
   protected render(): TemplateResult | void {
     if (!this.hass || !this._helpers) {

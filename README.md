@@ -16,16 +16,16 @@
 
 ## Options
 
-| Name              | Type    | Requirement  | Description                                     | Default             |
-| ----------------- | ------- | ------------ |-------------------------------------------------|---------------------|
-| type              | string  | **Required** | `custom:rainfall-tracker-card`                  |                     | 
-| name              | string  | **Optional** | Card name                                       | `Rainfall Tracker`  |
-| show_error        | boolean | **Optional** | Show what an error looks like for the card      | `false`             |
-| show_warning      | boolean | **Optional** | Show what a warning looks like for the card     | `false`             |
-| entity            | string  | **Optional** | Home Assistant entity ID.                       | `none`              |
-| tap_action        | object  | **Optional** | Action to take on tap                           | `action: more-info` |
-| hold_action       | object  | **Optional** | Action to take on hold                          | `none`              |
-| double_tap_action | object  | **Optional** | Action to take on double tap                    | `none`              |
+| Name                      | Type    | Requirement  | Description                                  | Default             |
+|---------------------------| ------- | ------------ |----------------------------------------------|---------------------|
+| type                      | string  | **Required** | `custom:rainfall-tracker-card`               |                     | 
+| entity                    | string  | **Required** | Home Assistant entity ID.                    | `none`              |
+| name                      | string  | **Optional** | Card name                                    | `Rainfall Tracker`  |
+| rainfall_intensity_entity | string  | **Optional** | Home Assistant entity ID for intensity rain. | `none`              |
+| area                      | string  | **Optional** | Measurement sensor area                      | `none`              |
+| tap_action                | object  | **Optional** | Action to take on tap                        | `action: more-info` |
+| hold_action               | object  | **Optional** | Action to take on hold                       | `none`              |
+| double_tap_action         | object  | **Optional** | Action to take on double tap                 | `none`              |
 
 ## Action Options
 
@@ -38,6 +38,16 @@
 | service_data    | object | **Optional** | Service data to include (e.g. entity_id: media_player.bedroom) when action defined as call-service | `none`      |
 | haptic          | string | **Optional** | Haptic feedback _success, warning, failure, light, medium, heavy, selection_                       | `none`      |
 | repeat          | number | **Optional** | How often to repeat the `hold_action` in milliseconds.                                             | `none`      |
+
+### Language
+
+The following languages are supported:
+
+| Language | Yaml value | Supported | Translated by                                       |
+|----------|------------|-----------|-----------------------------------------------------|
+| English  | `en`       | v1.0.0    | [@DidacChaves](https://www.github.com/DidacChaves)  |
+| Catalan  | `ca`       | v1.0.0    | [@DidacChaves](https://www.github.com/DidacChaves)  |
+| Spanish  | `es`       | v1.0.0    | [@DidacChaves](https://www.github.com/DidacChaves)  |
 
 ## Credits
 
@@ -56,4 +66,3 @@ Special thanks for their valuable contributions to the Home Assistant community 
 [releases-shield]: https://img.shields.io/github/release/DidacChaves/rainfall-tracker-card.svg?style=for-the-badge
 [releases]: https://github.com/DidacChaves/rainfall-tracker-card/releases
 [downloads]: https://img.shields.io/github/downloads/DidacChaves/rainfall-tracker-card/total?style=for-the-badge
-```
