@@ -12,7 +12,7 @@
 
 🌧️ Rainfall Tracker: Custom Home Assistant card to display current and accumulated rainfall data in a clear and interactive way.
 
-![Default](https://github.com/didacchaves/rainfall-tracker-card/blob/master/docs/images/rain-meter-card.png?raw=true)
+![Default](https://github.com/didacchaves/rainfall-tracker-card/blob/master/docs/images/img.png?raw=true)
 
 ## Options
 
