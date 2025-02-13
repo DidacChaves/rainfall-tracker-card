@@ -154,7 +154,7 @@ export default css`
       transform: rotate(93deg) translateX(0);
     }
     to {
-      transform: rotate(93deg) translateX(calc(530px));
+      transform: rotate(93deg) translateX(530px);
     }
   }
 `;

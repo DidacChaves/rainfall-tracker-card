@@ -95,16 +95,15 @@ export class RainfallTrackerCard extends LitElement implements LovelaceCard {
     const rainContent = this.shadowRoot?.querySelector('.rain-content') as HTMLElement | null;
     if (!rainContent) return;
 
-    // Limpiar los elementos existentes
+    const containerWidth = this.offsetWidth || window.innerWidth;
     rainContent.innerHTML = '';
 
-    let hrElement: HTMLElement;
     const counter = 20;
     for (let i = 0; i < counter; i++) {
-      hrElement = document.createElement("HR");
-      hrElement.style.left = Math.floor((Math.random() * this.offsetWidth)-40) + "px";
-      hrElement.style.animationDuration = 0.2 + Math.random() * 0.9 + "s";
-      hrElement.style.animationDelay = Math.random() * 2 + "s";
+      const hrElement = document.createElement("HR");
+      hrElement.style.left = `${Math.random() * containerWidth - 40}px`;
+      hrElement.style.animationDuration = `${0.2 + Math.random() * 0.9}s`;
+      hrElement.style.animationDelay = `${Math.random() * 2}s`;
       rainContent.appendChild(hrElement);
     }
   }
