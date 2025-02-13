@@ -1,3 +1,9 @@
+## [1.0.2](https://github.com/DidacChaves/rainfall-tracker-card/compare/v1.0.1...v1.0.2) (2025-02-13)
+
+### Bug Fixes
+
+* update CSS transform and optimize HR element creation (issue [#123](https://github.com/DidacChaves/rainfall-tracker-card/issues/123)) ([0db7e62](https://github.com/DidacChaves/rainfall-tracker-card/commit/0db7e62b5ff8fdbc35c4316fe243226071c39577))
+
 ## [1.0.1](https://github.com/DidacChaves/rainfall-tracker-card/compare/v1.0.0...v1.0.1) (2025-02-09)
 
 ### Bug Fixes
