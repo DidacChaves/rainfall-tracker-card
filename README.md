@@ -1,7 +1,7 @@
 # Rainfall tracker card by [@DidacChaves](https://www.github.com/DidacChaves)
 
 [![GitHub Release][releases-shield]][releases]
-[![License][license-shield]](LICENSE.md)
+[![License][license-shield]](LICENSE)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
 
 ![Downloads][downloads]
@@ -16,16 +16,18 @@
 
 ## Options
 
-| Name                      | Type    | Requirement  | Description                                  | Default             |
-|---------------------------| ------- | ------------ |----------------------------------------------|---------------------|
-| type                      | string  | **Required** | `custom:rainfall-tracker-card`               |                     | 
-| entity                    | string  | **Required** | Home Assistant entity ID.                    | `none`              |
-| name                      | string  | **Optional** | Card name                                    | `Rainfall Tracker`  |
-| rainfall_intensity_entity | string  | **Optional** | Home Assistant entity ID for intensity rain. | `none`              |
-| area                      | string  | **Optional** | Measurement sensor area                      | `none`              |
-| tap_action                | object  | **Optional** | Action to take on tap                        | `action: more-info` |
-| hold_action               | object  | **Optional** | Action to take on hold                       | `none`              |
-| double_tap_action         | object  | **Optional** | Action to take on double tap                 | `none`              |
+| Name                      | Type    | Requirement  | Description                                                            | Default               |
+|---------------------------| ------- | ------------ |------------------------------------------------------------------------|-----------------------|
+| type                      | string  | **Required** | `custom:rainfall-tracker-card`                                         |                       | 
+| entity                    | string  | **Required** | Home Assistant entity ID.                                              | `none`                |
+| name                      | string  | **Optional** | Card name                                                              | `Rainfall Tracker`    |
+| rainfall_intensity_entity | string  | **Optional** | Home Assistant entity ID for intensity rain.                           | `none`                |
+| max_level                 | string  | **Optional** | the maximum level at which, when reached, the card is completely full  | `50`                  | 
+| isImperial                | string  | **Optional** | switches between mm and in as values for the sensor.                   | `mm`                  |
+| area                      | string  | **Optional** | Measurement sensor area                                                | `none`                |
+| tap_action                | object  | **Optional** | Action to take on tap                                                  | `action: more-info`   |
+| hold_action               | object  | **Optional** | Action to take on hold                                                 | `none`                |
+| double_tap_action         | object  | **Optional** | Action to take on double tap                                           | `none`                |
 
 ## Action Options
 

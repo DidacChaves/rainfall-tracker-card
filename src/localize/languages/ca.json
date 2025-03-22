@@ -4,7 +4,9 @@
     "ENTITY": "Entitat de pluja",
     "RAINFALL_INTENSITY_ENTITY": "Entitat d'intensitat de pluja (opcional)",
     "AREA": "Àrea a mostrar (Opcional)",
-    "NAME": "Nom (Opcional)"
+    "NAME": "Nom (Opcional)",
+    "IMPERIAL": "Imperial",
+    "MAX_LEVEL": "Nivell màxim"
   },
   "ERROR": {
     "NO_ENTITY": "No s'ha definit cap entitat",

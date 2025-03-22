@@ -9,20 +9,13 @@ export default css`
 
   ha-selector,
   ha-area-picker,
-  ha-formfield {
+  ha-formfield,
+  ha-textfield{
     margin-bottom: 24px;
     display: block;
   }
 
   ha-textfield {
     display: block;
-  }
-
-  mwc-formfield {
-    padding-bottom: 8px;
-  }
-
-  mwc-switch {
-    --mdc-theme-secondary: var(--switch-checked-color);
   }
 `;

@@ -13,6 +13,8 @@ export interface RainfallTrackerCardConfig extends LovelaceCardConfig {
   test_gui?: boolean;
   entity?: string;
   rainfall_intensity_entity?: string;
+  isImperial?: boolean;
+  max_level?: string;
   area?: string;
   tap_action?: ActionConfig;
   hold_action?: ActionConfig;

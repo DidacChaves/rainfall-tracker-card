@@ -4,7 +4,9 @@
     "ENTITY": "Rainfall Entity",
     "RAINFALL_INTENSITY_ENTITY": "Rainfall Intensity Entity (optional)",
     "AREA": "Area to display (Optional)",
-    "NAME": "Name (Optional)"
+    "NAME": "Name (Optional)",
+    "IMPERIAL": "Imperial",
+    "MAX_LEVEL": "Max Level"
   },
   "ERROR": {
     "NO_ENTITY": "No Entity Defined",

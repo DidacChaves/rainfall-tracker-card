@@ -46,6 +46,14 @@ export class RainfallTrackerCardEditor extends LitElement implements LovelaceCar
     return this._config?.area || '';
   }
 
+  get _isImperial(): boolean {
+    return this._config?.isImperial || false;
+  }
+
+  get _max_level(): string  {
+    return this._config?.max_level || '';
+  }
+
 
   protected render(): TemplateResult | void {
     if (!this.hass || !this._helpers) {
@@ -53,6 +61,12 @@ export class RainfallTrackerCardEditor extends LitElement implements LovelaceCar
     }
 
     return html`
+        <ha-textfield
+                label="${localize('COMMON.NAME')}"
+                .value=${this._name}
+                .configValue=${'name'}
+                @input=${this._valueChanged}>
+        </ha-textfield>
         <ha-selector
                 .hass=${this.hass}
                 .selector=${{entity: {domain: ["sensor"]}}}
@@ -82,12 +96,18 @@ export class RainfallTrackerCardEditor extends LitElement implements LovelaceCar
         >
         </ha-area-picker>
         <ha-textfield
-                label="${localize('COMMON.NAME')}"
-                .value=${this._name}
-                .configValue=${'name'}
+                label="${localize('COMMON.MAX_LEVEL')}"
+                .value=${this._max_level}
+                .configValue=${'max_level'}
                 @input=${this._valueChanged}>
         </ha-textfield>
-        </ha-form-col>
+        <ha-formfield .label=${localize('COMMON.IMPERIAL')}>
+            <ha-switch
+                    .checked=${this._isImperial}
+                    .configValue=${'isImperial'}
+                    @change=${this._valueChanged}
+            ></ha-switch>
+        </ha-formfield>
     `;
   }
 

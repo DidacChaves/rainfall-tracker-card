@@ -59,12 +59,13 @@ export default css`
       margin-right: 4px;
       margin-inline-end: 4px;
       margin-inline-start: initial;
+      text-shadow: 0 0 4px var(--ha-card-background);
     }
 
     .measurement {
       font-size: 18px;
       color: var(--secondary-text-color);
-      text-shadow: 1px 1px 2px var(--ha-card-background);
+      text-shadow: 0 0 4px var(--ha-card-background);
     }
 
     .value2 {
@@ -72,12 +73,13 @@ export default css`
       margin-right: 4px;
       margin-inline-end: 4px;
       margin-inline-start: initial;
+      text-shadow: 0 0 4px var(--ha-card-background);
     }
 
     .measurement2 {
       font-size: 14px;
       color: var(--secondary-text-color);
-      text-shadow: 1px 1px 2px var(--ha-card-background);
+      text-shadow: 0 0 4px var(--ha-card-background);
     }
   }
 
@@ -89,6 +91,8 @@ export default css`
     left: 0;
     bottom: 0;
     border-radius: var(--ha-card-border-radius, 12px);
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
   }
 
   .waves {

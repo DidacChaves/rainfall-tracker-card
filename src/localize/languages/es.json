@@ -4,7 +4,9 @@
     "ENTITY": "Entidad de lluvia",
     "RAINFALL_INTENSITY_ENTITY": "Entidad de intensidad de lluvia (opcional)",
     "AREA": "Área a mostrar (Opcional)",
-    "NAME": "Nombre (Opcional)"
+    "NAME": "Nombre (Opcional)",
+    "IMPERIAL": "Imperial",
+    "MAX_LEVEL": "Nivel máximo"
   },
   "ERROR": {
     "NO_ENTITY": "No se ha definido ninguna entidad",

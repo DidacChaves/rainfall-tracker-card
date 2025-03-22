@@ -124,20 +124,24 @@ export class RainfallTrackerCard extends LitElement implements LovelaceCard {
       return this._showError(localize('ERROR.NO_ENTITY'));
     }
 
-    const {entity, rainfall_intensity_entity} = this.config;
+    const {entity, rainfall_intensity_entity, max_level, isImperial} = this.config;
     const rainfallState = entity ? this.hass.states[entity] : undefined;
     const rainfallValue = rainfallState ? parseFloat(rainfallState.state) : 0;
+    const maxRainfallValue = max_level ? parseFloat(max_level) : 50;
     const rainfallIntensityState = rainfall_intensity_entity ? this.hass.states[rainfall_intensity_entity] : undefined;
     const rainfallIntensityValue = rainfallIntensityState ? parseFloat(rainfallIntensityState.state) : 0;
 
+    const rainfallValueCap = Math.min(rainfallValue, maxRainfallValue);
+
+    // Function: f(x) = 20% if x <= 0.2 * max, 20% + 30% * (x - 0.2 * max) / (0.3 * max) si x <= 0.5 * max, 50% + 50% * (x - 0.5 * max) / (0.5 * max) si x <= max
     const percentage = Math.min(
-      rainfallValue <= 2
-        ? rainfallValue * 10
-        : rainfallValue <= 5
-          ? 20 + (rainfallValue - 2) * 5
-          : 35 + (rainfallValue - 5) * 2,
+      rainfallValueCap <= 0.2 * maxRainfallValue
+        ? (rainfallValueCap / (0.2 * maxRainfallValue)) * 20 // Primer 20% con valores bajos
+        : rainfallValueCap <= 0.5 * maxRainfallValue
+          ? 20 + ((rainfallValueCap - 0.2 * maxRainfallValue) / (0.3 * maxRainfallValue)) * 30 // De 20% a 50%
+          : 50 + ((rainfallValueCap - 0.5 * maxRainfallValue) / (0.5 * maxRainfallValue)) * 50, // De 50% a 100%
       100
-    )
+    );
 
     return html`
         <ha-card
@@ -160,12 +164,12 @@ export class RainfallTrackerCard extends LitElement implements LovelaceCard {
             <div class="info">
                 <div>
                     <span class="value">${rainfallValue}</span>
-                    <span class="measurement">mm</span>
+                    <span class="measurement">${isImperial ? 'in': 'mm'}</span>
                 </div>
                 ${rainfallIntensityState ? html`
                     <div>
                         <span class="value2">${rainfallIntensityValue}</span>
-                        <span class="measurement2">mm/h</span>
+                        <span class="measurement2">${isImperial ? 'in': 'mm'}/h</span>
                     </div>
                 `: ''}
             </div>
