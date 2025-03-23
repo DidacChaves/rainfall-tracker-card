@@ -2,7 +2,6 @@ import { css } from 'lit'
 
 export default css`
   .with-fixed-footer {
-    justify-content: flex-start;
     overflow: hidden;
   }
 

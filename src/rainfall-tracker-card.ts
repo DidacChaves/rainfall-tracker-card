@@ -154,7 +154,6 @@ export class RainfallTrackerCard extends LitElement implements LovelaceCard {
                 tabindex="0"
                 .label=${`Rainfall Tracker: ${this.config.entity || localize('ERROR.NO_ENTITY')}`}
         >
-            <div class="rain-content" style="${rainfallIntensityValue === 0 ? 'display: none;' : ''}"></div>
             <div class="header">
                 <div class="name" title="${this.config.name}">${this.config.name}</div>
                 <div class="icon">
@@ -187,6 +186,7 @@ export class RainfallTrackerCard extends LitElement implements LovelaceCard {
                     </g>
                 </svg>
             </div>
+            <div class="rain-content" style="${rainfallIntensityValue === 0 ? 'display: none;' : ''}"></div>
         </ha-card>
     `;
   }
