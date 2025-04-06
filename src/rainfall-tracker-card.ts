@@ -79,6 +79,7 @@ export class RainfallTrackerCard extends LitElement implements LovelaceCard {
       rows: 2,
       min_columns: 6,
       min_rows: 2,
+      max_rows: 4,
     };
   }
 
@@ -172,6 +173,7 @@ export class RainfallTrackerCard extends LitElement implements LovelaceCard {
                     </div>
                 `: ''}
             </div>
+            <div class="rain-content" style="${rainfallIntensityValue === 0 ? 'display: none;' : ''}"></div>
             <div class="footer">
                 <svg class="waves" style="transform: translateY(${100 - percentage}%);" xmlns="http://www.w3.org/2000/svg"
                      xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 125 28" preserveAspectRatio="none" shape-rendering="auto">
@@ -186,7 +188,6 @@ export class RainfallTrackerCard extends LitElement implements LovelaceCard {
                     </g>
                 </svg>
             </div>
-            <div class="rain-content" style="${rainfallIntensityValue === 0 ? 'display: none;' : ''}"></div>
         </ha-card>
     `;
   }

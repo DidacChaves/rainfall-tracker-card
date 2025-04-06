@@ -7,9 +7,9 @@ export default css`
 
   ha-card {
     height: 100%;
+    padding: 16px 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     cursor: pointer;
     outline: 0;
     position: relative;
@@ -17,16 +17,15 @@ export default css`
 
   .header {
     display: flex;
-    padding: 8px 16px 0;
+    padding: 0 16px 16px;
     justify-content: space-between;
     position: relative;
     z-index: 1;
 
     .name {
       color: var(--secondary-text-color);
-      line-height: 40px;
       font-weight: 500;
-      font-size: 16px;
+      font-size: 1.2em;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -37,7 +36,6 @@ export default css`
     .icon {
       color: var(--paper-item-icon-color, #44739e);
       --state-inactive-color: var(--paper-item-icon-color, #44739e);
-      line-height: 40px;
     }
   }
 
@@ -51,33 +49,34 @@ export default css`
     position: relative;
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
     z-index: 1;
 
     .value {
-      font-size: 28px;
-      margin-right: 4px;
-      margin-inline-end: 4px;
-      margin-inline-start: initial;
+      font-size: 2.4em;
+      margin-right: .25rem;
+      font-weight: 300;
       text-shadow: 0 0 4px var(--ha-card-background);
     }
 
     .measurement {
-      font-size: 18px;
-      color: var(--secondary-text-color);
+      font-size: 1.4em;
+      font-weight: 400;
+      opacity: .6;
       text-shadow: 0 0 4px var(--ha-card-background);
     }
 
     .value2 {
-      font-size: 22px;
-      margin-right: 4px;
-      margin-inline-end: 4px;
-      margin-inline-start: initial;
+      font-size: 2.0em;
+      margin-right: .25rem;
+      font-weight: 300;
       text-shadow: 0 0 4px var(--ha-card-background);
     }
 
     .measurement2 {
-      font-size: 14px;
-      color: var(--secondary-text-color);
+      font-size: 1.1em;
+      font-weight: 400;
+      opacity: .6;
       text-shadow: 0 0 4px var(--ha-card-background);
     }
   }
@@ -85,7 +84,7 @@ export default css`
   .footer {
     overflow: hidden;
     position: absolute;
-    height: 115px;
+    height: 100%;
     right: 0;
     left: 0;
     bottom: 0;
@@ -100,7 +99,7 @@ export default css`
     width: 100%;
     margin-bottom: -7px; /*Fix for safari gap*/
     min-height: 100px;
-    max-height: 150px;
+    max-height: 100%;
     transition: height 0.5s ease-in-out;
   }
 
