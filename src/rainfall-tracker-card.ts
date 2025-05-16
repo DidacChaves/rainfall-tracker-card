@@ -156,7 +156,7 @@ export class RainfallTrackerCard extends LitElement implements LovelaceCard {
                 .label=${`Rainfall Tracker: ${this.config.entity || localize('ERROR.NO_ENTITY')}`}
         >
             <div class="header">
-                <div class="name" title="${this.config.name}">${this.config.name}</div>
+                <div class="name ellipsis" title="${this.config.name}">${this.config.name}</div>
                 <div class="icon">
                     <ha-icon class="icon" icon="mdi:weather-pouring"></ha-icon>
                 </div>

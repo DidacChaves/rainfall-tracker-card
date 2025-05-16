@@ -21,10 +21,10 @@ export default css`
     justify-content: space-between;
     position: relative;
     z-index: 1;
+    font-size: 14px;
 
     .name {
       color: var(--secondary-text-color);
-      font-weight: 500;
       font-size: 1.2em;
       overflow: hidden;
       white-space: nowrap;
@@ -32,7 +32,13 @@ export default css`
       padding-right: 5px;
       text-shadow: 1px 1px 2px var(--ha-card-background);
     }
-
+    
+    .ellipsis {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
     .icon {
       color: var(--paper-item-icon-color, #44739e);
       --state-inactive-color: var(--paper-item-icon-color, #44739e);
@@ -40,17 +46,12 @@ export default css`
   }
 
   .info {
-    padding: 0 16px 16px;
-    margin-top: -4px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 28px;
-    position: relative;
     display: flex;
+    padding: 0 16px 16px;
+    font-weight: 300;
+    align-items: flex-start;
     justify-content: space-between;
-    align-items: flex-end;
-    z-index: 1;
+    line-height: 30px;
 
     .value {
       font-size: 2.4em;
