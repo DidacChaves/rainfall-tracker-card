@@ -1,6 +1,6 @@
 {
   "name": "rainfall-tracker-card",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Lovelace rainfall-tracker-card",
   "main": "dist/rainfall-tracker-card.js",
   "scripts": {

@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/DidacChaves/rainfall-tracker-card/compare/v1.2.0...v1.2.1) (2025-05-16)
+
+### Bug Fixes
+
+* enhance styling for rainfall tracker card (issue [#123](https://github.com/DidacChaves/rainfall-tracker-card/issues/123)) ([fe0000a](https://github.com/DidacChaves/rainfall-tracker-card/commit/fe0000aadd939f8585e5ec1b3bacd20276301a0b))
+
 ## [1.2.0](https://github.com/DidacChaves/rainfall-tracker-card/compare/v1.1.1...v1.2.0) (2025-04-06)
 
 ### Features
