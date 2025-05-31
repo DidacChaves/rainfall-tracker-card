@@ -52,6 +52,7 @@ export default css`
     align-items: flex-start;
     justify-content: space-between;
     line-height: 30px;
+    z-index: 1;
 
     .value {
       font-size: 2.4em;
