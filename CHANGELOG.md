@@ -1,3 +1,9 @@
+## [1.3.0](https://github.com/DidacChaves/rainfall-tracker-card/compare/v1.2.1...v1.3.0) (2025-05-31)
+
+### Features
+
+* **styles:** add z-index to rainfall tracker card (issue [#123](https://github.com/DidacChaves/rainfall-tracker-card/issues/123)) ([b113c7f](https://github.com/DidacChaves/rainfall-tracker-card/commit/b113c7f0fcc4c57aef3d047238bbc1344f54dca1))
+
 ## [1.2.1](https://github.com/DidacChaves/rainfall-tracker-card/compare/v1.2.0...v1.2.1) (2025-05-16)
 
 ### Bug Fixes
