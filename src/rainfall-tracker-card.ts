@@ -3,10 +3,9 @@ import { CSSResultGroup, html, LitElement, PropertyValues, TemplateResult} from 
 import {customElement, property, state} from 'lit/decorators.js';
 import {
   ActionHandlerEvent,
-  getLovelace,
+  formatNumber,
   handleAction,
   hasAction,
-  hasConfigOrEntityChanged,
   HomeAssistant,
   LovelaceCardEditor,
   LovelaceCard
@@ -15,6 +14,7 @@ import type {RainfallTrackerCardConfig} from './types';
 import {actionHandler} from './action-handler-directive';
 import {CARD_VERSION} from './const';
 import {localize} from './localize/localize';
+import {createDrops, defaultMaxLevel, levelPercentage, parseMaxLevel, parseState} from './utils/rainfall';
 import styles from './styles/rainfall-tracker-card.css'
 
 /* eslint no-console: 0 */
@@ -39,8 +39,11 @@ export class RainfallTrackerCard extends LitElement implements LovelaceCard {
     return document.createElement('rainfall-tracker-card-editor');
   }
 
-  public static getStubConfig(): Record<string, unknown> {
-    return {};
+  public static getStubConfig(hass?: HomeAssistant): Record<string, unknown> {
+    const sensors = Object.values(hass?.states ?? {}).filter(
+      (s) => s.entity_id.startsWith('sensor.') && s.attributes.device_class === 'precipitation',
+    );
+    return {entity: sensors[0]?.entity_id ?? ''};
   }
 
   // Add any properities that should cause your element to re-render here
@@ -49,23 +52,26 @@ export class RainfallTrackerCard extends LitElement implements LovelaceCard {
 
   @state() private config!: RainfallTrackerCardConfig;
 
+  // Raindrops are random but fixed for the life of the card, so the animation is not restarted on updates
+  private _drops = createDrops();
+
   // https://lit.dev/docs/components/properties/#accessors-custom
   public setConfig(config: RainfallTrackerCardConfig): void {
     if (!config) {
-      throw new Error(localize('ERROR.INVALID_CONFIG'));
+      throw new Error(localize('ERROR.INVALID_CONFIG', this.hass?.language));
     }
 
     if (!config.entity) {
-      throw new Error(localize('ERROR.NO_ENTITY'));
+      throw new Error(localize('ERROR.NO_ENTITY', this.hass?.language));
     }
 
-    if (config.test_gui) {
-      getLovelace().setEditMode(true);
+    if ('isImperial' in config || 'area' in config) {
+      console.warn('rainfall-tracker-card: `isImperial` and `area` are no longer used. The unit is read from the entity.');
     }
 
     this.config = {
-      name: 'Rainfall Tracker',
       ...config,
+      max_level: parseMaxLevel(config.max_level),
     };
   }
 
@@ -88,61 +94,50 @@ export class RainfallTrackerCard extends LitElement implements LovelaceCard {
     if (!this.config) {
       return false;
     }
-
-    return hasConfigOrEntityChanged(this, changedProps, false);
-  }
-
-  private createRaindrops(): void {
-    const rainContent = this.shadowRoot?.querySelector('.rain-content') as HTMLElement | null;
-    if (!rainContent) return;
-
-    const containerWidth = this.offsetWidth || window.innerWidth;
-    rainContent.innerHTML = '';
-
-    const counter = 20;
-    for (let i = 0; i < counter; i++) {
-      const hrElement = document.createElement("HR");
-      hrElement.style.left = `${Math.random() * containerWidth - 40}px`;
-      hrElement.style.animationDuration = `${0.2 + Math.random() * 0.9}s`;
-      hrElement.style.animationDelay = `${Math.random() * 2}s`;
-      rainContent.appendChild(hrElement);
+    if (changedProps.has('config')) {
+      return true;
     }
-  }
 
-  protected firstUpdated(): void {
-    this.createRaindrops();
-  }
-
-  protected updated(changedProps: PropertyValues): void {
-    if (changedProps.has('config') || changedProps.has('hass')) {
-      this.createRaindrops();
+    const oldHass = changedProps.get('hass') as HomeAssistant | undefined;
+    if (!oldHass) {
+      return true;
     }
+
+    // `hass` changes with every state update in HA: only repaint when one of our entities changed
+    return [this.config.entity, this.config.rainfall_intensity_entity].some(
+      (id) => id !== undefined && oldHass.states[id] !== this.hass.states[id],
+    );
+  }
+
+  private _format(value: number | null): string {
+    return value === null ? '—' : formatNumber(value, this.hass.locale, {maximumFractionDigits: 2});
   }
 
   // https://lit.dev/docs/components/rendering/
   protected render(): TemplateResult | void {
-    if (!this.config.entity) {
-      return this._showError(localize('ERROR.NO_ENTITY'));
+    if (!this.config || !this.hass) {
+      return html``;
     }
 
-    const {entity, rainfall_intensity_entity, max_level, isImperial} = this.config;
+    const lang = this.hass.language;
+    const {entity, rainfall_intensity_entity} = this.config;
     const rainfallState = entity ? this.hass.states[entity] : undefined;
-    const rainfallValue = rainfallState ? parseFloat(rainfallState.state) : 0;
-    const maxRainfallValue = max_level ? parseFloat(max_level) : 50;
-    const rainfallIntensityState = rainfall_intensity_entity ? this.hass.states[rainfall_intensity_entity] : undefined;
-    const rainfallIntensityValue = rainfallIntensityState ? parseFloat(rainfallIntensityState.state) : 0;
 
-    const rainfallValueCap = Math.min(rainfallValue, maxRainfallValue);
+    if (!rainfallState) {
+      return this._showError(localize('ERROR.ENTITY_NOT_FOUND', lang, {entity: entity ?? ''}));
+    }
 
-    // Function: f(x) = 20% if x <= 0.2 * max, 20% + 30% * (x - 0.2 * max) / (0.3 * max) si x <= 0.5 * max, 50% + 50% * (x - 0.5 * max) / (0.5 * max) si x <= max
-    const percentage = Math.min(
-      rainfallValueCap <= 0.2 * maxRainfallValue
-        ? (rainfallValueCap / (0.2 * maxRainfallValue)) * 20 // Primer 20% con valores bajos
-        : rainfallValueCap <= 0.5 * maxRainfallValue
-          ? 20 + ((rainfallValueCap - 0.2 * maxRainfallValue) / (0.3 * maxRainfallValue)) * 30 // De 20% a 50%
-          : 50 + ((rainfallValueCap - 0.5 * maxRainfallValue) / (0.5 * maxRainfallValue)) * 50, // De 50% a 100%
-      100
-    );
+    const unit: string = rainfallState.attributes.unit_of_measurement || 'mm';
+    const rainfallValue = parseState(rainfallState.state);
+    const maxRainfallValue = this.config.max_level ?? defaultMaxLevel(unit);
+    const percentage = rainfallValue === null ? 0 : levelPercentage(rainfallValue, maxRainfallValue);
+
+    const intensityState = rainfall_intensity_entity ? this.hass.states[rainfall_intensity_entity] : undefined;
+    const intensityValue = intensityState ? parseState(intensityState.state) : null;
+    const intensityUnit: string = intensityState?.attributes.unit_of_measurement || `${unit}/h`;
+    const isRaining = (intensityValue ?? 0) > 0;
+
+    const title = this.config.name || localize('CARD.DEFAULT_NAME', lang);
 
     return html`
         <ha-card
@@ -153,27 +148,34 @@ export class RainfallTrackerCard extends LitElement implements LovelaceCard {
                     hasDoubleClick: hasAction(this.config.double_tap_action),
                 })}
                 tabindex="0"
-                .label=${`Rainfall Tracker: ${this.config.entity || localize('ERROR.NO_ENTITY')}`}
+                role="button"
+                aria-label="${title}: ${this._format(rainfallValue)} ${unit}"
         >
             <div class="header">
-                <div class="name ellipsis" title="${this.config.name}">${this.config.name}</div>
+                <div class="name ellipsis" title="${title}">${title}</div>
                 <div class="icon">
-                    <ha-icon class="icon" icon="mdi:weather-pouring"></ha-icon>
+                    <ha-icon icon="mdi:weather-pouring"></ha-icon>
                 </div>
             </div>
             <div class="info">
                 <div>
-                    <span class="value">${rainfallValue}</span>
-                    <span class="measurement">${isImperial ? 'in': 'mm'}</span>
+                    <span class="value">${this._format(rainfallValue)}</span>
+                    <span class="measurement">${unit}</span>
                 </div>
-                ${rainfallIntensityState ? html`
+                ${intensityState ? html`
                     <div>
-                        <span class="value2">${rainfallIntensityValue}</span>
-                        <span class="measurement2">${isImperial ? 'in': 'mm'}/h</span>
+                        <span class="value2">${this._format(intensityValue)}</span>
+                        <span class="measurement2">${intensityUnit}</span>
                     </div>
                 `: ''}
             </div>
-            <div class="rain-content" style="${rainfallIntensityValue === 0 ? 'display: none;' : ''}"></div>
+            ${isRaining ? html`
+                <div class="rain-content">
+                    ${this._drops.map((drop) => html`
+                        <hr style="left: ${drop.left}%; animation-duration: ${drop.duration}s; animation-delay: ${drop.delay}s;"/>
+                    `)}
+                </div>
+            ` : ''}
             <div class="footer">
                 <svg class="waves" style="transform: translateY(${100 - percentage}%);" xmlns="http://www.w3.org/2000/svg"
                      xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 125 28" preserveAspectRatio="none" shape-rendering="auto">

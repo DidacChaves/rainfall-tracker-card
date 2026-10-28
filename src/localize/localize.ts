@@ -3,26 +3,30 @@ import * as ca from './languages/ca.json';
 import * as es from './languages/es.json';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const languages: any = {
-  ca: ca,
-  en: en,
-  es: es,
+const languages: Record<string, any> = {
+  ca,
+  en,
+  es,
 };
 
-export function localize(string: string, search = '', replace = ''): string {
-  const lang = (localStorage.getItem('selectedLanguage') || 'en').replace(/['"]+/g, '').replace('-', '_');
-  let translated: string;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const lookup = (dictionary: any, key: string): string | undefined => {
+  const value = key.split('.').reduce((o, i) => (o == null ? undefined : o[i]), dictionary);
+  return typeof value === 'string' ? value : undefined;
+};
 
-  try {
-    translated = string.split('.').reduce((o, i) => o[i], languages[lang]);
-  } catch (e) {
-    translated = string.split('.').reduce((o, i) => o[i], languages['en']);
-  }
+/**
+ * Translates a key such as `ERROR.NO_ENTITY`.
+ * @param key Dot separated key (upper case, as in the language files)
+ * @param language Language code, normally `hass.language` (`es`, `ca`, `es-ES`...)
+ * @param params Values for `{placeholders}` in the text
+ *
+ * Falls back to the base language (`es-ES` -> `es`), then English, then the key itself.
+ */
+export function localize(key: string, language = 'en', params: Record<string, string> = {}): string {
+  const lang = language.replace(/['"]+/g, '').replace('_', '-').toLowerCase();
+  const dictionary = languages[lang] ?? languages[lang.split('-')[0]] ?? languages.en;
+  const text = lookup(dictionary, key) ?? lookup(languages.en, key) ?? key;
 
-  if (translated === undefined) translated = string.split('.').reduce((o, i) => o[i], languages['en']);
-
-  if (search !== '' && replace !== '') {
-    translated = translated.replace(search, replace);
-  }
-  return translated;
+  return Object.entries(params).reduce((result, [name, value]) => result.split(`{${name}}`).join(value), text);
 }

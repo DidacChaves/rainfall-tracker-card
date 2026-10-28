@@ -16,18 +16,35 @@
 
 ## Options
 
-| Name                      | Type    | Requirement  | Description                                                            | Default               |
-|---------------------------| ------- | ------------ |------------------------------------------------------------------------|-----------------------|
-| type                      | string  | **Required** | `custom:rainfall-tracker-card`                                         |                       | 
-| entity                    | string  | **Required** | Home Assistant entity ID.                                              | `none`                |
-| name                      | string  | **Optional** | Card name                                                              | `Rainfall Tracker`    |
-| rainfall_intensity_entity | string  | **Optional** | Home Assistant entity ID for intensity rain.                           | `none`                |
-| max_level                 | string  | **Optional** | the maximum level at which, when reached, the card is completely full  | `50`                  | 
-| isImperial                | string  | **Optional** | switches between mm and in as values for the sensor.                   | `mm`                  |
-| area                      | string  | **Optional** | Measurement sensor area                                                | `none`                |
-| tap_action                | object  | **Optional** | Action to take on tap                                                  | `action: more-info`   |
-| hold_action               | object  | **Optional** | Action to take on hold                                                 | `none`                |
-| double_tap_action         | object  | **Optional** | Action to take on double tap                                           | `none`                |
+| Name                      | Type    | Requirement  | Description                                                                                     | Default                    |
+|---------------------------|---------|--------------|-------------------------------------------------------------------------------------------------|----------------------------|
+| type                      | string  | **Required** | `custom:rainfall-tracker-card`                                                                  |                            |
+| entity                    | string  | **Required** | Accumulated rainfall sensor. The unit (`mm` or `in`) is read from the entity.                   |                            |
+| name                      | string  | **Optional** | Card name                                                                                       | `Rainfall Tracker` (translated) |
+| rainfall_intensity_entity | string  | **Optional** | Rainfall intensity sensor (`mm/h` or `in/h`). Enables the rain animation when it is above 0.     | `none`                     |
+| max_level                 | number  | **Optional** | Rainfall, in the unit of `entity`, at which the card is completely full. Must be greater than 0.  | `50` for mm, `2` for in      |
+| tap_action                | object  | **Optional** | Action to take on tap                                                                           | `action: more-info`        |
+| hold_action               | object  | **Optional** | Action to take on hold                                                                          | `none`                     |
+| double_tap_action         | object  | **Optional** | Action to take on double tap                                                                    | `none`                     |
+
+### How the level is drawn
+
+The water level is not linear, so small amounts of rain are still visible:
+
+| Rainfall (% of `max_level`) | Card filled |
+|-----------------------------|-------------|
+| 0 – 20 %                    | 0 – 20 %    |
+| 20 – 50 %                   | 20 – 50 %   |
+| 50 – 100 %                  | 50 – 100 %  |
+
+The animations respect the `prefers-reduced-motion` setting of the device.
+
+### Migrating from 1.x
+
+- `isImperial` was removed: the unit is now read from the sensor. If your sensor reports inches, set `max_level` in inches (or leave it empty for the default of 2).
+- `area` was removed: it never had any effect.
+- `max_level` is now a number (a numeric string still works).
+- The visual editor only lists sensors with the `precipitation` and `precipitation_intensity` device classes. Other sensors can be set in YAML.
 
 ## Action Options
 

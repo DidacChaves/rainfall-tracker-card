@@ -22,27 +22,21 @@ export default css`
     position: relative;
     z-index: 1;
     font-size: 14px;
+  }
 
-    .name {
-      color: var(--secondary-text-color);
-      font-size: 1.2em;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      padding-right: 5px;
-      text-shadow: 1px 1px 2px var(--ha-card-background);
-    }
-    
-    .ellipsis {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    
-    .icon {
-      color: var(--paper-item-icon-color, #44739e);
-      --state-inactive-color: var(--paper-item-icon-color, #44739e);
-    }
+  .header .name {
+    color: var(--secondary-text-color);
+    font-size: 1.2em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-right: 5px;
+    text-shadow: 1px 1px 2px var(--ha-card-background);
+  }
+
+  .header .icon {
+    color: var(--paper-item-icon-color, #44739e);
+    --state-inactive-color: var(--paper-item-icon-color, #44739e);
   }
 
   .info {
@@ -53,34 +47,34 @@ export default css`
     justify-content: space-between;
     line-height: 30px;
     z-index: 1;
+  }
 
-    .value {
-      font-size: 2.4em;
-      margin-right: .25rem;
-      font-weight: 300;
-      text-shadow: 0 0 4px var(--ha-card-background);
-    }
+  .info .value {
+    font-size: 2.4em;
+    margin-right: .25rem;
+    font-weight: 300;
+    text-shadow: 0 0 4px var(--ha-card-background);
+  }
 
-    .measurement {
-      font-size: 1.4em;
-      font-weight: 400;
-      opacity: .6;
-      text-shadow: 0 0 4px var(--ha-card-background);
-    }
+  .info .measurement {
+    font-size: 1.4em;
+    font-weight: 400;
+    opacity: .6;
+    text-shadow: 0 0 4px var(--ha-card-background);
+  }
 
-    .value2 {
-      font-size: 2.0em;
-      margin-right: .25rem;
-      font-weight: 300;
-      text-shadow: 0 0 4px var(--ha-card-background);
-    }
+  .info .value2 {
+    font-size: 2.0em;
+    margin-right: .25rem;
+    font-weight: 300;
+    text-shadow: 0 0 4px var(--ha-card-background);
+  }
 
-    .measurement2 {
-      font-size: 1.1em;
-      font-weight: 400;
-      opacity: .6;
-      text-shadow: 0 0 4px var(--ha-card-background);
-    }
+  .info .measurement2 {
+    font-size: 1.1em;
+    font-weight: 400;
+    opacity: .6;
+    text-shadow: 0 0 4px var(--ha-card-background);
   }
 
   .footer {
@@ -102,7 +96,7 @@ export default css`
     margin-bottom: -7px; /*Fix for safari gap*/
     min-height: 100px;
     max-height: 100%;
-    transition: height 0.5s ease-in-out;
+    transition: transform 1s ease-in-out;
   }
 
   .parallax > use {
@@ -138,6 +132,15 @@ export default css`
     }
   }
 
+  .rain-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
 
   hr {
     width: 0;
@@ -159,6 +162,20 @@ export default css`
     }
     to {
       transform: rotate(93deg) translateX(530px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .parallax > use {
+      animation: none;
+    }
+
+    .waves {
+      transition: none;
+    }
+
+    .rain-content {
+      display: none;
     }
   }
 `;

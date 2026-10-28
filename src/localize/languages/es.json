@@ -1,15 +1,20 @@
 {
   "COMMON": {
-    "VERSION": "Versión",
     "ENTITY": "Entidad de lluvia",
     "RAINFALL_INTENSITY_ENTITY": "Entidad de intensidad de lluvia (opcional)",
-    "AREA": "Área a mostrar (Opcional)",
     "NAME": "Nombre (Opcional)",
-    "IMPERIAL": "Imperial",
-    "MAX_LEVEL": "Nivel máximo"
+    "MAX_LEVEL": "Nivel máximo (tarjeta llena)",
+    "INTERACTIONS": "Interacciones",
+    "TAP_ACTION": "Comportamiento al pulsar",
+    "HOLD_ACTION": "Comportamiento al mantener",
+    "DOUBLE_TAP_ACTION": "Comportamiento al pulsar dos veces"
+  },
+  "CARD": {
+    "DEFAULT_NAME": "Seguimiento de lluvia"
   },
   "ERROR": {
     "NO_ENTITY": "No se ha definido ninguna entidad",
-    "INVALID_CONFIG": "Configuración no válida"
+    "INVALID_CONFIG": "Configuración no válida",
+    "ENTITY_NOT_FOUND": "No se ha encontrado la entidad: {entity}"
   }
 }

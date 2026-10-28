@@ -13,142 +13,94 @@ export class RainfallTrackerCardEditor extends LitElement implements LovelaceCar
 
   @state() private _config?: RainfallTrackerCardConfig;
 
-  @state() private _helpers?: any;
-
-  private _initialized = false;
+  @state() private _componentsReady = false;
 
   public setConfig(config: RainfallTrackerCardConfig): void {
     this._config = config;
-    this.loadCardHelpers();
   }
 
-  protected shouldUpdate(): boolean {
-    if (!this._initialized) {
-      this._initialize();
+  connectedCallback(): void {
+    super.connectedCallback();
+    this._loadComponents();
+  }
+
+  /**
+   * HA loads `ha-form` (and the selectors) lazily, only when some built-in editor needs them.
+   * Opening the editor of a built-in card forces that load.
+   */
+  private async _loadComponents(): Promise<void> {
+    if (!customElements.get('ha-form')) {
+      try {
+        const helpers = await (window as any).loadCardHelpers();
+        const card = await helpers.createCardElement({type: 'entities', entities: []});
+        await card?.constructor?.getConfigElement?.();
+      } catch (err) {
+        console.warn('rainfall-tracker-card: could not preload HA form components', err);
+      }
+      await Promise.race([
+        customElements.whenDefined('ha-form'),
+        new Promise((resolve) => setTimeout(resolve, 3000)),
+      ]);
     }
-
-    return true;
+    this._componentsReady = true;
   }
 
-  get _name(): string {
-    return this._config?.name || '';
+  private _schema() {
+    return [
+      {name: 'name', selector: {text: {}}},
+      {
+        name: 'entity',
+        required: true,
+        selector: {entity: {domain: 'sensor', device_class: 'precipitation'}},
+      },
+      {
+        name: 'rainfall_intensity_entity',
+        selector: {entity: {domain: 'sensor', device_class: 'precipitation_intensity'}},
+      },
+      {name: 'max_level', selector: {number: {min: 0.1, step: 'any', mode: 'box'}}},
+      {
+        type: 'expandable',
+        title: localize('COMMON.INTERACTIONS', this.hass?.language),
+        schema: [
+          {name: 'tap_action', selector: {ui_action: {}}},
+          {name: 'hold_action', selector: {ui_action: {}}},
+          {name: 'double_tap_action', selector: {ui_action: {}}},
+        ],
+      },
+    ];
   }
 
-  get _entity(): string {
-    return this._config?.entity || '';
-  }
-
-  get _rainfall_intensity_entity(): string {
-    return this._config?.rainfall_intensity_entity || '';
-  }
-
-  get _area(): string {
-    return this._config?.area || '';
-  }
-
-  get _isImperial(): boolean {
-    return this._config?.isImperial || false;
-  }
-
-  get _max_level(): string  {
-    return this._config?.max_level || '';
-  }
-
+  // `ha-form` also calls this for the expandable group, which has a `title` instead of a `name`
+  private _computeLabel = (schema: {name?: string; title?: string}): string =>
+    schema.name ? localize(`COMMON.${schema.name.toUpperCase()}`, this.hass?.language) : schema.title ?? '';
 
   protected render(): TemplateResult | void {
-    if (!this.hass || !this._helpers) {
+    if (!this.hass || !this._config || !this._componentsReady) {
       return html``;
     }
 
     return html`
-        <ha-textfield
-                label="${localize('COMMON.NAME')}"
-                .value=${this._name}
-                .configValue=${'name'}
-                @input=${this._valueChanged}>
-        </ha-textfield>
-        <ha-selector
+        <ha-form
                 .hass=${this.hass}
-                .selector=${{entity: {domain: ["sensor"]}}}
-                .value=${this._entity}
-                .configValue=${'entity'}
-                name="entity"
-                label="${localize('COMMON.ENTITY')}"
+                .data=${this._config}
+                .schema=${this._schema()}
+                .computeLabel=${this._computeLabel}
                 @value-changed=${this._valueChanged}
-        ></ha-selector>
-        <ha-selector
-                .hass=${this.hass}
-                .selector=${{entity: {domain: ["sensor"]}}}
-                .value=${this._rainfall_intensity_entity}
-                .configValue=${'rainfall_intensity_entity'}
-                .required=${false}
-                name="rainfall_intensity_entity"
-                label="${localize('COMMON.RAINFALL_INTENSITY_ENTITY')}"
-                @value-changed=${this._valueChanged}
-        ></ha-selector>
-        <ha-area-picker
-                .curValue=${this._area}
-                .hass=${this.hass}
-                .value=${this._area}
-                .configValue=${'area'}
-                label="${localize('COMMON.AREA')}"
-                @value-changed=${this._valueChanged}
-        >
-        </ha-area-picker>
-        <ha-textfield
-                label="${localize('COMMON.MAX_LEVEL')}"
-                .value=${this._max_level}
-                .configValue=${'max_level'}
-                @input=${this._valueChanged}>
-        </ha-textfield>
-        <ha-formfield .label=${localize('COMMON.IMPERIAL')}>
-            <ha-switch
-                    .checked=${this._isImperial}
-                    .configValue=${'isImperial'}
-                    @change=${this._valueChanged}
-            ></ha-switch>
-        </ha-formfield>
+        ></ha-form>
     `;
   }
 
-  private _initialize(): void {
-    if (this.hass === undefined) return;
-    if (this._config === undefined) return;
-    if (this._helpers === undefined) return;
-    this._initialized = true;
-  }
+  private _valueChanged(ev: CustomEvent): void {
+    ev.stopPropagation();
+    if (!this._config) return;
 
-  private async loadCardHelpers(): Promise<void> {
-    this._helpers = await (window as any).loadCardHelpers();
-  }
-
-  private _valueChanged(ev): void {
-    if (!this._config || !this.hass) {
-      return;
-    }
-    const target = ev.target;
-
-    let value = ev.detail?.value || target.value;
-    if (!target.configValue) {
-      return;
+    // Empty fields are removed so the card falls back to its defaults
+    const config = {...ev.detail.value} as Record<string, unknown>;
+    for (const key of Object.keys(config)) {
+      if (config[key] === '' || config[key] === undefined || config[key] === null) delete config[key];
     }
 
-    if (value === this[`_${target.configValue}`]) {
-      value = ''; // Forzar el valor a null
-    }
-
-    if (target.configValue) {
-      if (value === '') {
-        const tmpConfig = {...this._config};
-        delete tmpConfig[target.configValue];
-        this._config = tmpConfig;
-      } else {
-        this._config = {
-          ...this._config,
-          [target.configValue]: target.checked !== undefined ? target.checked : value,
-        };
-      }
-    }
+    this._config = config as RainfallTrackerCardConfig;
     fireEvent(this, 'config-changed', {config: this._config});
   }
 

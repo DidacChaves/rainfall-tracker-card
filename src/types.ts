@@ -10,12 +10,12 @@ declare global {
 export interface RainfallTrackerCardConfig extends LovelaceCardConfig {
   type: string;
   name?: string;
-  test_gui?: boolean;
+  /** Accumulated rainfall sensor */
   entity?: string;
+  /** Rainfall intensity sensor (mm/h or in/h) */
   rainfall_intensity_entity?: string;
-  isImperial?: boolean;
-  max_level?: string;
-  area?: string;
+  /** Rainfall at which the card is completely full, in the unit of `entity` */
+  max_level?: number;
   tap_action?: ActionConfig;
   hold_action?: ActionConfig;
   double_tap_action?: ActionConfig;

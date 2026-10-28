@@ -1,15 +1,20 @@
 {
   "COMMON": {
-    "VERSION": "Version",
     "ENTITY": "Rainfall Entity",
     "RAINFALL_INTENSITY_ENTITY": "Rainfall Intensity Entity (optional)",
-    "AREA": "Area to display (Optional)",
     "NAME": "Name (Optional)",
-    "IMPERIAL": "Imperial",
-    "MAX_LEVEL": "Max Level"
+    "MAX_LEVEL": "Max level (card completely full)",
+    "INTERACTIONS": "Interactions",
+    "TAP_ACTION": "Tap behavior",
+    "HOLD_ACTION": "Hold behavior",
+    "DOUBLE_TAP_ACTION": "Double tap behavior"
+  },
+  "CARD": {
+    "DEFAULT_NAME": "Rainfall Tracker"
   },
   "ERROR": {
     "NO_ENTITY": "No Entity Defined",
-    "INVALID_CONFIG": "Invalid configuration"
+    "INVALID_CONFIG": "Invalid configuration",
+    "ENTITY_NOT_FOUND": "Entity not found: {entity}"
   }
 }

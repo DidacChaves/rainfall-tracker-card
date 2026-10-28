@@ -1,15 +1,20 @@
 {
   "COMMON": {
-    "VERSION": "Versió",
     "ENTITY": "Entitat de pluja",
     "RAINFALL_INTENSITY_ENTITY": "Entitat d'intensitat de pluja (opcional)",
-    "AREA": "Àrea a mostrar (Opcional)",
     "NAME": "Nom (Opcional)",
-    "IMPERIAL": "Imperial",
-    "MAX_LEVEL": "Nivell màxim"
+    "MAX_LEVEL": "Nivell màxim (targeta plena)",
+    "INTERACTIONS": "Interaccions",
+    "TAP_ACTION": "Comportament en tocar",
+    "HOLD_ACTION": "Comportament en mantenir",
+    "DOUBLE_TAP_ACTION": "Comportament en doble toc"
+  },
+  "CARD": {
+    "DEFAULT_NAME": "Seguiment de pluja"
   },
   "ERROR": {
     "NO_ENTITY": "No s'ha definit cap entitat",
-    "INVALID_CONFIG": "La configuració no vàlida"
+    "INVALID_CONFIG": "Configuració no vàlida",
+    "ENTITY_NOT_FOUND": "No s'ha trobat l'entitat: {entity}"
   }
 }
