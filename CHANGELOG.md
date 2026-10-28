@@ -1,3 +1,17 @@
+## [2.0.0](https://github.com/DidacChaves/rainfall-tracker-card/compare/v1.3.0...v2.0.0) (2026-10-28)
+
+### ⚠ BREAKING CHANGES
+
+* the `isImperial` and `area` options were removed (the unit is
+now read from the entity and `area` never had any effect), and `max_level` is
+now a number expressed in the unit of the sensor.
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+
+### Features
+
+* read the unit from the sensor, rebuild the editor with ha-form and fix animation and update bugs ([ae98b89](https://github.com/DidacChaves/rainfall-tracker-card/commit/ae98b89d8cccddb3c37cfbae23cba603c9b7bcf7))
+
 ## [1.3.0](https://github.com/DidacChaves/rainfall-tracker-card/compare/v1.2.1...v1.3.0) (2025-05-31)
 
 ### Features
